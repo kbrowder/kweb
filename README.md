@@ -1,0 +1,1 @@
+My current experiments with Scala + akka-camel + scalate
