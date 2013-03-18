@@ -18,14 +18,11 @@ import org.apache.camel.Exchange
 import akka.actor.ActorRef
 
 class BasicEndpoint(transformer: ActorRef) extends Consumer {
-  implicit val timeout = Timeout(5 seconds)
+  implicit val timeout = Timeout(25 seconds)
   def endpointUri = "jetty:http://localhost:8888/example?matchOnUriPrefix=true"
   def receive = {
     case msg => {
-      //println(msg)
       transformer forward msg
-      //sender ! ("<body><head><title>hi</title></head></body>")
-
     }
   }
 }
@@ -50,7 +47,7 @@ class ProofOfConcept extends FeatureSpec with ShouldMatchers {
       val endpoint = testSystem.actorOf(Props(new BasicEndpoint(transformer)))
       val producer = testSystem.actorOf(Props[BasicProducer])
 
-      implicit val timeout = Timeout(5 seconds)
+      implicit val timeout = Timeout(25 seconds)
       import testSystem.dispatcher
 
       val message = new CamelMessage("Hello World", Map[String, Any]())
